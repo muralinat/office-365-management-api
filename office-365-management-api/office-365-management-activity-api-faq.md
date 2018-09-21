@@ -43,4 +43,25 @@ At times, there are instances of a temporary outage or other issues in the Offic
 
 #### I am encountering a throttling error in the Management Activity API. What should I do?
 
-Open a ticket with [Microsoft Support](https://support.office.com/article/contact-support-for-business-products-admin-help-32a17ca7-6fa0-4870-8a8d-e25ba4ccfd4b#ID0EAADAAA=online) and request a new throttling limit, and include a business justification for increasing the limit. We will evaluate the request and if accepted, we will increase the throttling limit within 72 hours of receiving the request.
+Open a ticket with [Microsoft Support](https://support.office.com/article/contact-support-for-business-products-admin-help-32a17ca7-6fa0-4870-8a8d-e25ba4ccfd4b#ID0EAADAAA=online) and request a new throttling limit, and include a business justification for increasing the limit. 
+
+#### What is the maximum time I will have to wait before a notification is sent about a given Office 365 event?
+
+There is no guaranteed maximum latency for notification delivery (in other words, no SLA). Microsoft Support’s experience has been that most notifications are sent within one hour of the event. Often the latency is much shorter, but often it’s longer as well. This varies somewhat from workload to workload, but a general rule is that most notifications will be delivered within 24 hours of the originating event.
+
+
+#### Can I query the Management Activity API for a particular event ID or RecordType or other properties in the content blob?
+
+No. Don’t think of the data available through the Management Activity API as being a “log” in the traditional sense. Rather, think of it as a dump of event details. It’s up to you to gather all those event details, store and index them locally, and then implement your own query logic, by using either a custom application or a third-party tool.
+
+#### How do I know the data coming from my existing auditing solution, which collects data from the Management Activity API, is accurate and complete?
+
+The short answer is that Microsoft doesn’t provide any kind of a log that will allow you to cross-check any given application or third-party (ISV) application. There are other Microsoft security products that draw their data from the same pipeline, but those products fall outside the scope of this discussion and can’t be used to directly cross-check the Management Activity API. If you’re concerned about discrepancies between what your existing solution is providing and what you expect, you should implement the operations illustrated above. But this can be difficult, depending on how your existing tool or solution lists and indexes data. If your existing solution only presents data sorted by the creation time of the actual event, there’s no way to query the API by event creation time so that you could compare result sets. In this scenario, you’d have to collect the notified content blobs for several days, index or sort them manually, and then do a rough comparison.
+
+#### How long will the content blobs remain available?
+
+Content blobs are available 7 days after the notification of the content blob’s availability. This means that if there is a significant delay in the creation of the content blob, you will have more time (the delay plus 7 days) after the actual event creation date before the content blob is no longer available.
+
+#### If there is a 24-hour delay in getting a notification, doesn’t that mean I will have only 6 days to retrieve the content blob?
+
+No. Even if the notification is delayed for an unusually long period (for example, in the case of a service interruption), you would still have 7 days after the first availability of the notification to download the content blob related to the originating event.
